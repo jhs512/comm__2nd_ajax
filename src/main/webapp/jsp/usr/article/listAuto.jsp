@@ -6,12 +6,12 @@
 <script>
 let Articles__lastId = 0;
 function Articles__loadMore() {
-    fetch(`/usr/article/getArticles/free?fromId=${Articles__lastId}`)
+    fetch(`/usr/article/getArticles/free?fromId=\${Articles__lastId}`)
         .then(data => data.json())
         .then(responseData => {
-            console.log(responseData);
-            for ( const key in responseData.data ) {
-                const article = responseData.data[key];
+            const articles = responseData.data;
+            for ( const index in articles ) {
+                const article = articles[index];
 
                 const html = `
                     <li class="flex">
@@ -23,6 +23,10 @@ function Articles__loadMore() {
                 `;
 
                 $('.articles').append(html);
+            }
+
+            if ( articles.length > 0 ) {
+                Articles__lastId = articles[articles.length - 1].id;
             }
         });
 }
