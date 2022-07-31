@@ -1,5 +1,6 @@
 package com.ll.exam.chat;
 
+import com.ll.exam.article.dto.ArticletDto;
 import com.ll.exam.chat.dto.ChatRoomDto;
 
 import java.util.ArrayList;
@@ -36,5 +37,15 @@ public class ChatRoomRepository {
 
     public List<ChatRoomDto> findAll() {
         return datum;
+    }
+
+    public ChatRoomDto findById(long id) {
+        for (ChatRoomDto chatRoomDto : datum) {
+            if (chatRoomDto.getId() == id) {
+                return chatRoomDto;
+            }
+        }
+
+        return null;
     }
 }
