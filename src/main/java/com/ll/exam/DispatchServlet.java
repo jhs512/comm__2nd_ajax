@@ -49,6 +49,9 @@ public class DispatchServlet extends HttpServlet {
                 break;
             case "POST":
                 switch (rq.getActionPath()) {
+                    case "/usr/chat/createRoom":
+                        chatController.doCreateRoom(rq);
+                        break;
                     case "/usr/article/write":
                         articleController.doWrite(rq);
                         break;

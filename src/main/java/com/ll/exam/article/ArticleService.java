@@ -1,6 +1,6 @@
 package com.ll.exam.article;
 
-import com.ll.exam.article.dto.ArticleDto;
+import com.ll.exam.article.dto.ArticletDto;
 
 import java.util.List;
 
@@ -15,11 +15,11 @@ public class ArticleService {
         return articleRepository.write(title, body);
     }
 
-    public List<ArticleDto> findAll() {
+    public List<ArticletDto> findAll() {
         return articleRepository.findAll();
     }
 
-    public ArticleDto findById(long id) {
+    public ArticletDto findById(long id) {
         return articleRepository.findById(id);
     }
 
@@ -31,7 +31,7 @@ public class ArticleService {
         articleRepository.modify(id, title, body);
     }
 
-    public List<ArticleDto> findIdGreaterThan(long fromId) {
+    public List<ArticletDto> findIdGreaterThan(long fromId) {
         return articleRepository.findAllIdGreaterThan(fromId);
     }
 }

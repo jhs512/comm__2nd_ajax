@@ -1,7 +1,7 @@
 package com.ll.exam.article;
 
 import com.ll.exam.Rq;
-import com.ll.exam.article.dto.ArticleDto;
+import com.ll.exam.article.dto.ArticletDto;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public class ArticleController {
     }
 
     public void showList(Rq rq) {
-        List<ArticleDto> articleDtos = articleService.findAll();
+        List<ArticletDto> articleDtos = articleService.findAll();
 
         rq.setAttr("articles", articleDtos);
         rq.view("usr/article/list");
@@ -44,7 +44,6 @@ public class ArticleController {
         long id = articleService.write(title, body);
 
         rq.replace("/usr/article/detail/free/%d".formatted(id), "%d번 게시물이 생성 되었습니다.".formatted(id));
-
     }
 
     public void showDetail(Rq rq) {
@@ -55,7 +54,7 @@ public class ArticleController {
             return;
         }
 
-        ArticleDto articleDto = articleService.findById(id);
+        ArticletDto articleDto = articleService.findById(id);
 
         if (articleDto == null) {
             rq.historyBack("해당 글이 존재하지 않습니다.");
@@ -74,7 +73,7 @@ public class ArticleController {
             return;
         }
 
-        ArticleDto articleDto = articleService.findById(id);
+        ArticletDto articleDto = articleService.findById(id);
 
         if (articleDto == null) {
             rq.historyBack("해당 글이 존재하지 않습니다.");
@@ -94,7 +93,7 @@ public class ArticleController {
             return;
         }
 
-        ArticleDto articleDto = articleService.findById(id);
+        ArticletDto articleDto = articleService.findById(id);
 
         if (articleDto == null) {
             rq.historyBack("해당 글이 존재하지 않습니다.");
@@ -113,7 +112,7 @@ public class ArticleController {
             return;
         }
 
-        ArticleDto articleDto = articleService.findById(id);
+        ArticletDto articleDto = articleService.findById(id);
 
         if (articleDto == null) {
             rq.historyBack("해당 글이 존재하지 않습니다.");
@@ -133,7 +132,7 @@ public class ArticleController {
     public void getArticles(Rq rq) {
         long fromId = rq.getLongParam("fromId", -1);
 
-        List<ArticleDto> articleDtos = null;
+        List<ArticletDto> articleDtos = null;
 
         if ( fromId == -1 ) {
             articleDtos = articleService.findAll();

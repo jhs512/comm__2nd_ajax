@@ -1,6 +1,6 @@
 package com.ll.exam.article;
 
-import com.ll.exam.article.dto.ArticleDto;
+import com.ll.exam.article.dto.ArticletDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class ArticleRepository {
-    private static List<ArticleDto> datum;
+    private static List<ArticletDto> datum;
     private static long lastId;
 
     static {
@@ -28,19 +28,19 @@ public class ArticleRepository {
 
     public static long write(String title, String body) {
         long id = ++lastId;
-        ArticleDto newArticleDto = new ArticleDto(id, title, body);
+        ArticletDto newArticleDto = new ArticletDto(id, title, body);
 
         datum.add(newArticleDto);
 
         return id;
     }
 
-    public static List<ArticleDto> findAll() {
+    public static List<ArticletDto> findAll() {
         return datum;
     }
 
-    public static ArticleDto findById(long id) {
-        for (ArticleDto articleDto : datum) {
+    public static ArticletDto findById(long id) {
+        for (ArticletDto articleDto : datum) {
             if (articleDto.getId() == id) {
                 return articleDto;
             }
@@ -50,7 +50,7 @@ public class ArticleRepository {
     }
 
     public void delete(long id) {
-        ArticleDto articleDto = findById(id);
+        ArticletDto articleDto = findById(id);
 
         if (articleDto == null) return;
 
@@ -58,7 +58,7 @@ public class ArticleRepository {
     }
 
     public void modify(long id, String title, String body) {
-        ArticleDto articleDto = findById(id);
+        ArticletDto articleDto = findById(id);
 
         if (articleDto == null) return;
 
@@ -66,7 +66,7 @@ public class ArticleRepository {
         articleDto.setBody(body);
     }
 
-    public List<ArticleDto> findAllIdGreaterThan(long fromId) {
+    public List<ArticletDto> findAllIdGreaterThan(long fromId) {
         return datum
                 .stream()
                 .filter(articleDto -> articleDto.getId() > fromId)
