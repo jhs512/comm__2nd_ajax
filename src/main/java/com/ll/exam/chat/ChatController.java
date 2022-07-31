@@ -1,6 +1,10 @@
 package com.ll.exam.chat;
 
 import com.ll.exam.Rq;
+import com.ll.exam.article.dto.ArticletDto;
+import com.ll.exam.chat.dto.ChatRoomDto;
+
+import java.util.List;
 
 public class ChatController {
     private ChatService chatService;
@@ -30,5 +34,12 @@ public class ChatController {
         long id = chatService.createRoom(title, body);
 
         rq.replace("/usr/chat/room/%d".formatted(id), "%d번 채팅방이 생성 되었습니다.".formatted(id));
+    }
+
+    public void showRoomList(Rq rq) {
+        List<ChatRoomDto> chatRoomDtos = chatService.findAllRooms();
+
+        rq.setAttr("rooms", chatRoomDtos);
+        rq.view("usr/chat/roomList");
     }
 }
