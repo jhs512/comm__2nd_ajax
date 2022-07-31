@@ -6,6 +6,7 @@ import java.util.List;
 
 public class ChatService {
     private ChatRoomRepository chatRoomRepository;
+    private ChatMessageRepository chatMessageRepository;
 
     public ChatService() {
         chatRoomRepository = new ChatRoomRepository();
@@ -29,5 +30,9 @@ public class ChatService {
 
     public void deleteRoom(long id) {
         chatRoomRepository.deleteRoom(id);
+    }
+
+    public void writeMessage(long roomId, String body) {
+        chatMessageRepository.write(roomId, body);
     }
 }

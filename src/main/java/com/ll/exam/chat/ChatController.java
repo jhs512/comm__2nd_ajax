@@ -1,7 +1,6 @@
 package com.ll.exam.chat;
 
 import com.ll.exam.Rq;
-import com.ll.exam.article.dto.ArticletDto;
 import com.ll.exam.chat.dto.ChatRoomDto;
 
 import java.util.List;
@@ -46,14 +45,14 @@ public class ChatController {
     public void showModifyRoom(Rq rq) {
         long id = rq.getLongPathValueByIndex(0, -1);
 
-        if ( id == -1 ) {
+        if (id == -1) {
             rq.historyBack("번호를 입력해주세요.");
             return;
         }
 
         ChatRoomDto chatRoom = chatService.findRoomById(id);
 
-        if ( chatRoom == null ) {
+        if (chatRoom == null) {
             rq.historyBack("존재하지 않는 채팅방 입니다.");
             return;
         }
@@ -65,28 +64,28 @@ public class ChatController {
     public void doModifyRoom(Rq rq) {
         long id = rq.getLongPathValueByIndex(0, -1);
 
-        if ( id == -1 ) {
+        if (id == -1) {
             rq.historyBack("번호를 입력해주세요.");
             return;
         }
 
         String title = rq.getParam("title", "");
 
-        if ( title.length() == 0 ) {
+        if (title.length() == 0) {
             rq.historyBack("제목을 입력해주세요.");
             return;
         }
 
         String body = rq.getParam("body", "");
 
-        if ( body.length() == 0 ) {
+        if (body.length() == 0) {
             rq.historyBack("내용을 입력해주세요.");
             return;
         }
 
         ChatRoomDto chatRoom = chatService.findRoomById(id);
 
-        if ( chatRoom == null ) {
+        if (chatRoom == null) {
             rq.historyBack("존재하지 않는 채팅방 입니다.");
             return;
         }
@@ -119,14 +118,14 @@ public class ChatController {
     public void showRoom(Rq rq) {
         long id = rq.getLongPathValueByIndex(0, -1);
 
-        if ( id == -1 ) {
+        if (id == -1) {
             rq.historyBack("번호를 입력해주세요.");
             return;
         }
 
         ChatRoomDto chatRoom = chatService.findRoomById(id);
 
-        if ( chatRoom == null ) {
+        if (chatRoom == null) {
             rq.historyBack("존재하지 않는 채팅방 입니다.");
             return;
         }
@@ -137,9 +136,28 @@ public class ChatController {
 
     public void doWriteMessage(Rq rq) {
         long roomId = rq.getLongPathValueByIndex(0, -1);
+
+        if (roomId == -1) {
+            rq.historyBack("채팅방 번호를 입력해주세요.");
+            return;
+        }
+
+        ChatRoomDto chatRoom = chatService.findRoomById(roomId);
+
+        if (chatRoom == null) {
+            rq.historyBack("존재하지 않는 채팅방 입니다.");
+            return;
+        }
+
         String body = rq.getParam("body", "");
 
-        rq.println("채팅방 번호 : %d<br />".formatted(roomId));
-        rq.println("채팅메세지 : %s<br />".formatted(body));
+        if (body.trim().length() == 0) {
+            rq.historyBack("내용을 입력해주세요.");
+            return;
+        }
+
+        chatService.writeMessage(roomId, body);
+
+        rq.replace("/usr/chat/room/%d".formatted(roomId), "메세지가 등록되었습니다.");
     }
 }
