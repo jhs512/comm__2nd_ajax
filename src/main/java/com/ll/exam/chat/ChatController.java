@@ -107,7 +107,7 @@ public class ChatController {
         ChatRoomDto chatRoomDto = chatService.findRoomById(id);
 
         if (chatRoomDto == null) {
-            rq.historyBack("해당 글이 존재하지 않습니다.");
+            rq.historyBack("해당 채팅방 존재하지 않습니다.");
             return;
         }
 
@@ -239,5 +239,27 @@ public class ChatController {
         }
 
         rq.successJson(chatMessageDtos);
+    }
+
+    public void deleteMessage(Rq rq) {
+        long id = rq.getLongPathValueByIndex(0, 0);
+
+        if (id == 0) {
+            rq.historyBack("번호를 입력해주세요.");
+            return;
+        }
+
+        ChatMessageDto chatMessageDto = chatService.findMessageById(id);
+
+        if (chatMessageDto == null) {
+            rq.historyBack("해당 메세지가 존재하지 않습니다.");
+            return;
+        }
+
+        long roomId = chatMessageDto.getRoomId();
+
+        chatService.deleteMessage(id);
+
+        rq.replace("/usr/chat/room/%d".formatted(roomId), "%d번 메세지가 삭제되었습니다.".formatted(id));
     }
 }
