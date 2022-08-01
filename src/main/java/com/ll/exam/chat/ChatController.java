@@ -1,7 +1,6 @@
 package com.ll.exam.chat;
 
 import com.ll.exam.Rq;
-import com.ll.exam.article.dto.ArticleDto;
 import com.ll.exam.chat.dto.ChatMessageDto;
 import com.ll.exam.chat.dto.ChatRoomDto;
 
@@ -187,6 +186,33 @@ public class ChatController {
         rq.replace("/usr/chat/room/%d".formatted(roomId), "메세지가 등록되었습니다.");
     }
 
+    public void doWriteMessageAjax(Rq rq) {
+        long roomId = rq.getLongPathValueByIndex(0, -1);
+
+        if (roomId == -1) {
+            rq.failJson("채팅방 번호를 입력해주세요.");
+            return;
+        }
+
+        ChatRoomDto chatRoom = chatService.findRoomById(roomId);
+
+        if (chatRoom == null) {
+            rq.failJson("존재하지 않는 채팅방 입니다.");
+            return;
+        }
+
+        String body = rq.getParam("body", "");
+
+        if (body.trim().length() == 0) {
+            rq.historyBack("내용을 입력해주세요.");
+            return;
+        }
+
+        long newChatMessageId = chatService.writeMessage(roomId, body);
+
+        rq.successJson(newChatMessageId);
+    }
+
     public void getMessages(Rq rq) {
         long roomId = rq.getLongPathValueByIndex(0, -1);
 
@@ -206,21 +232,12 @@ public class ChatController {
 
         List<ChatMessageDto> chatMessageDtos = null;
 
-        if ( fromId == -1 ) {
+        if (fromId == -1) {
             chatMessageDtos = chatService.findMessagesByRoomId(roomId);
-        }
-        else {
+        } else {
             chatMessageDtos = chatService.findMessagesByRoomIdGreaterThan(roomId, fromId);
         }
 
         rq.successJson(chatMessageDtos);
-    }
-
-    public void doWriteMessageAjax(Rq rq) {
-        // roomId 구하고
-        // body 구하고
-        // 등록
-
-        rq.successJson(null);
     }
 }
