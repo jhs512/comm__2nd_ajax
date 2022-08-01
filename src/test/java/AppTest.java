@@ -1,5 +1,5 @@
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.ll.exam.article.dto.ArticletDto;
+import com.ll.exam.article.dto.ArticleDto;
 import com.ll.exam.util.Ut;
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +28,7 @@ public class AppTest {
     @Test
         // ArticleDto => JS객체(단순)
     void ObjectMapper__articleDtoToJsonStr() {
-        ArticletDto articleDto = new ArticletDto(1, "제목", "내용");
+        ArticleDto articleDto = new ArticleDto(1, "제목", "내용");
 
         String jsonStr = Ut.json.toStr(articleDto, "");
         assertThat(jsonStr).isNotBlank();
@@ -40,9 +40,9 @@ public class AppTest {
     @Test
         // List<ArticleDto> => JS배열
     void ObjectMapper__articleDtoListToJsonStr() {
-        List<ArticletDto> articleDtos = new ArrayList<>();
-        articleDtos.add(new ArticletDto(1, "제목1", "내용1"));
-        articleDtos.add(new ArticletDto(2, "제목2", "내용2"));
+        List<ArticleDto> articleDtos = new ArrayList<>();
+        articleDtos.add(new ArticleDto(1, "제목1", "내용1"));
+        articleDtos.add(new ArticleDto(2, "제목2", "내용2"));
 
         String jsonStr = Ut.json.toStr(articleDtos, "");
         assertThat(jsonStr).isEqualTo("""
@@ -53,9 +53,9 @@ public class AppTest {
     @Test
         // Map<String, ArticleDto> => JS객체(복잡)
     void ObjectMapper__articleDtoMapToJsonStr() {
-        Map<String, ArticletDto> articleDtoMap = new HashMap<>();
-        articleDtoMap.put("가장오래된", new ArticletDto(1, "제목1", "내용1"));
-        articleDtoMap.put("최신", new ArticletDto(2, "제목2", "내용2"));
+        Map<String, ArticleDto> articleDtoMap = new HashMap<>();
+        articleDtoMap.put("가장오래된", new ArticleDto(1, "제목1", "내용1"));
+        articleDtoMap.put("최신", new ArticleDto(2, "제목2", "내용2"));
         String jsonStr = Ut.json.toStr(articleDtoMap, "");
         assertThat(jsonStr).isEqualTo("""
                 {"가장오래된":{"id":1,"title":"제목1","body":"내용1"},"최신":{"id":2,"title":"제목2","body":"내용2"}}
@@ -65,23 +65,23 @@ public class AppTest {
     @Test
         // JS객체(단순) => ArticleDto
     void ObjectMapper__jsonStrToObj() {
-        ArticletDto articleDtoOrigin = new ArticletDto(1, "제목", "내용");
+        ArticleDto articleDtoOrigin = new ArticleDto(1, "제목", "내용");
         String jsonStr = Ut.json.toStr(articleDtoOrigin, "");
 
-        ArticletDto articleDtoFromJson = Ut.json.toObj(jsonStr, ArticletDto.class, null);
+        ArticleDto articleDtoFromJson = Ut.json.toObj(jsonStr, ArticleDto.class, null);
         assertThat(articleDtoOrigin).isEqualTo(articleDtoFromJson);
     }
 
     @Test
         // JS배열 => List<ArticleDto>
     void ObjectMapper__jsonStrToArticleDtoList() {
-        List<ArticletDto> articleDtos = new ArrayList<>();
-        articleDtos.add(new ArticletDto(1, "제목1", "내용1"));
-        articleDtos.add(new ArticletDto(2, "제목2", "내용2"));
+        List<ArticleDto> articleDtos = new ArrayList<>();
+        articleDtos.add(new ArticleDto(1, "제목1", "내용1"));
+        articleDtos.add(new ArticleDto(2, "제목2", "내용2"));
 
         String jsonStr = Ut.json.toStr(articleDtos, "");
 
-        List<ArticletDto> articleDtosFromJson = Ut.json.toObj(jsonStr, new TypeReference<>() {
+        List<ArticleDto> articleDtosFromJson = Ut.json.toObj(jsonStr, new TypeReference<>() {
         }, null);
 
         assertThat(articleDtosFromJson).isEqualTo(articleDtos);
@@ -90,12 +90,12 @@ public class AppTest {
     @Test
         // JS객체(복잡) => Map<String, ArticleDto>
     void ObjectMapper__jsonStrToArticleDtoMap() {
-        Map<String, ArticletDto> articleDtoMap = new HashMap<>();
-        articleDtoMap.put("가장오래된", new ArticletDto(1, "제목1", "내용1"));
-        articleDtoMap.put("최신", new ArticletDto(2, "제목2", "내용2"));
+        Map<String, ArticleDto> articleDtoMap = new HashMap<>();
+        articleDtoMap.put("가장오래된", new ArticleDto(1, "제목1", "내용1"));
+        articleDtoMap.put("최신", new ArticleDto(2, "제목2", "내용2"));
         String jsonStr = Ut.json.toStr(articleDtoMap, "");
 
-        Map<String, ArticletDto> articleDtoMapFromJson = Ut.json.toObj(jsonStr, new TypeReference<>() {
+        Map<String, ArticleDto> articleDtoMapFromJson = Ut.json.toObj(jsonStr, new TypeReference<>() {
         }, null);
 
         assertThat(articleDtoMapFromJson).isEqualTo(articleDtoMap);
