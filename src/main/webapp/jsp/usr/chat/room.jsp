@@ -44,10 +44,24 @@ function ChatMessages__remove(id, btn) {
                 alert(data.msg);
             }
 
-            $(btn).parent().remove();
+            // $(btn).parent().parent().remove();
+            // closest : 조상중에서 나와 가장 가까운 사람 1명 찾기
+            // $(btn).closest('li') : 나(a)를 기준으로, 나의 조상중에서 나와 가장 가까운 li 하나 찾기
+            $(btn).closest('li').remove();
         },
         dataType: 'json'
     });
+}
+
+function ChatMessages__modify(form) {
+    form.body.value = form.body.value.trim();
+
+    if ( form.body.value.length == 0 ) {
+        alert('내용을 입력해주세요.');
+        form.body.focus();
+
+        return;
+    }
 }
 
 function ChatMessages__loadMore() {
@@ -59,12 +73,18 @@ function ChatMessages__loadMore() {
                 const message = messages[index];
 
                 const html = `
-                    <li class="flex">
-                        <span>메세지 \${message.id} :</span>
-                        &nbsp;
-                        <span>\${message.body}</span>
-                        &nbsp;
-                        <a onclick="if ( confirm('정말로 삭제하시겠습니까?') ) ChatMessages__remove(\${message.id}, this); return false;" class="cursor-pointer hover:underline hover:text-[red] mr-2">삭제</a>
+                    <li>
+                        <div class="flex">
+                            <span>메세지 \${message.id} :</span>
+                            &nbsp;
+                            <span>\${message.body}</span>
+                            &nbsp;
+                            <a onclick="if ( confirm('정말로 삭제하시겠습니까?') ) ChatMessages__remove(\${message.id}, this); return false;" class="cursor-pointer hover:underline hover:text-[red] mr-2">삭제</a>
+                        </div>
+                        <form onsubmit="ChatMessages__modify(this); return false;">
+                            <input type="text" name="body" class="input input-bordered" placeholder="내용" value="\${message.body}" />
+                            <button type="submit" class="btn btn-secondary btn-outline">수정</button>
+                        </form>
                     </li>
                 `;
 
@@ -93,7 +113,7 @@ function ChatMessages__loadMore() {
             ${room.body}
         </div>
 
-        <form onsubmit="ChatMessageSave__submitForm(this); return false;" method="POST" action="/usr/chat/writeMessage/${room.id}">
+        <form onsubmit="ChatMessageSave__submitForm(this); return false;" method="POST" action="/usr/chat/modifyMessage/${room.id}">
             <input autofocus name="body" type="text" placeholder="메세지를 입력해주세요." class="input input-bordered" />
             <button type="submit" value="" class="btn btn-outline btn-primary">
                 작성
